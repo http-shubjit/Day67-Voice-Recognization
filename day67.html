@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Voice Recognition</title>
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#output {
+  margin-top: 20px;
+  padding: 20px;
+  font-size: 24px;
+  color: #555;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  button {
+    font-size: 16px;
+  }
+  
+  #output {
+    width: 90%;
+    font-size: 20px;
+  }
+}
+
+  
+</style>
+</head>
+<body>
+<h1>Voice Recognition</h1>
+<button onclick="startRecognition()">Start Recognition</button>
+<button onclick="stopRecognition()">Stop Recognition</button>
+<div id="output"></div>
+<script>
+
+let recognition = null;
+
+// Check for browser support
+if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    
+    // Set properties for recognition
+    recognition.lang = 'en-US'; // Language
+    recognition.interimResults = true; // Show interim results
+    
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById('output').textContent = transcript;
+    };
+    
+    recognition.onerror = function(event) {
+        console.error('Speech recognition error:', event.error);
+    };
+    
+    function startRecognition() {
+        if (recognition) {
+            recognition.start();
+            console.log('Recognition started');
+        }
+    }
+    
+    function stopRecognition() {
+        if (recognition) {
+            recognition.stop();
+            console.log('Recognition stopped');
+        }
+    }
+} else {
+    alert('Speech recognition is not supported in this browser.');
+}
+
+</script>
+</body>
+</html>
